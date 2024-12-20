@@ -1,47 +1,31 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
     <title>Latin to English Translator</title>
-
 </head>
-
 <body>
-
     <h1>Latin to English Translator</h1>
-
     <textarea id="latinText" placeholder="Enter Latin text here"></textarea><br>
-
     <button onclick="translateLatin()">Translate</button><br>
-
     <div id="result"></div>
 
-
-
     <script>
-
         function translateLatin() {
-
             let latinText = document.getElementById("latinText").value;
-
             // Use Google Translate API to translate
-
-            fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=la&tl=en&dt=t&q=${encodeURIComponent(latinText)}`) 
-
+            fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=la&tl=en&dt=t&q=${encodeURIComponent(latinText)}`)
                 .then(response => response.json())
-
                 .then(data => {
-
-                    document.getElementById("result").textContent = data[0]; 
-
+                    if (data && data[0] && data[0][0]) {
+                        document.getElementById("result").textContent = data[0][0][0]; 
+                    } else {
+                        document.getElementById("result").textContent = "Translation error.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("result").textContent = "Error: " + error.message;
                 });
-
         }
-
     </script>
-
 </body>
-
 </html>
